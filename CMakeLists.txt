@@ -36,6 +36,7 @@ FetchContent_Declare(
     GIT_TAG asio-1-28-2
 )
 FetchContent_GetProperties(asio)
+
 if(NOT asio_POPULATED)
     FetchContent_Populate(asio)
 endif()
@@ -55,6 +56,7 @@ FetchContent_Declare(
     GIT_TAG v1.13.0
 )
 FetchContent_GetProperties(spdlog)
+
 if(NOT spdlog_POPULATED)
     FetchContent_Populate(spdlog)
 endif()
@@ -70,6 +72,7 @@ FetchContent_Declare(
     GIT_TAG master
 )
 FetchContent_GetProperties(inipp)
+
 if(NOT inipp_POPULATED)
     FetchContent_Populate(inipp)
 endif()

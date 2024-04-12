@@ -77,7 +77,7 @@
 #define STRINGCAT_HELPER(x, y)  x ## y
 #define STRINGCAT(x, y)  STRINGCAT_HELPER(x, y)
 
-#define LAMDBA_REF(...) ((void)((void) __VA_ARGS__))
+#define LAMBDA_REF(...) ((void)((void) __VA_ARGS__))
 
 // 不使用，稻草人标识符
 enum { __defer_stack__ };

@@ -7,7 +7,6 @@
 #endif
 
 #include <regex>
-#include <experimental/filesystem>
 
 #include <inipp/inipp.h>
 

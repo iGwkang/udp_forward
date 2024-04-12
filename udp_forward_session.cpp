@@ -15,7 +15,7 @@ void UDPForwardSession::do_read_data()
 {
     auto self(shared_from_this());
     m_dst_udp_socket.async_receive(asio::buffer(m_recv_buffer), [=](const asio::error_code & ec, std::size_t bytes_transferred) {
-        LAMDBA_REF(self);
+        LAMBDA_REF(self);
         if (ec)
         {
             std::error_code local_endpoint_ec;
@@ -29,7 +29,7 @@ void UDPForwardSession::do_read_data()
 
         m_li_udp_socket.async_send_to(asio::buffer(m_recv_buffer.data(), bytes_transferred), m_src_endpoint,
                                       [=](const asio::error_code & ec, std::size_t bytes_transferred) {
-                                          LAMDBA_REF(self);
+                                          LAMBDA_REF(self);
                                           if (ec)
                                           {
                                               LOG_WARN("udp socket sendto {} error:{}", m_src_endpoint, ec.message());
@@ -51,7 +51,7 @@ void UDPForwardSession::on_udp_data(std::vector<uint8_t> && data)
     LOG_TRACE("recv udp data from {} to {}, size:{}", m_src_endpoint, m_dst_endpoint, data.size());
 
     m_dst_udp_socket.async_send(asio_buffer, [=, data = std::move(data)](const asio::error_code & ec, std::size_t bytes_transferred) {
-        LAMDBA_REF(self);
+        LAMBDA_REF(self);
         LOG_WARN_IF(ec, "udp socket sendto {} error:{}", m_dst_endpoint, ec.message());
     });
 }

@@ -43,10 +43,13 @@ cmake --build . --config Release
 ## Usage Example:speech_balloon:
 
 1. Configure forwarding parameters following the format specified in `config/forward.ini`.
-   > [Forward]
-10000=10.10.1.1:12000
-10001=10.10.1.2:12000
-10002=10.10.1.3:12000
+```
+  [Forward]
+  10000=10.10.1.1:12000
+  10001=10.10.1.2:12000
+  10002=10.10.1.3:12000
+```
+
 2. Run `udp_forward` with the command `./udp_forward -c config/forward.ini`.
    This will cause `udp_forward` to listen on `0.0.0.0:10000` and forward packets to `10.10.1.1:12000`.
 

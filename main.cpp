@@ -8,7 +8,7 @@
 
 #include <regex>
 
-#include <inipp/inipp.h>
+#include <inipp.h>
 
 #include "udp_forward_server.h"
 
@@ -45,11 +45,11 @@ static void cli(int argc, char ** argv)
 #endif
             printf(R"(Usage: %s [-switches]
 Available switches:
-  -h                - Display this help
+  -h                - display this help
   -c<config>        - forward configuration file path
-  -l<log>           - Log output path (default: console)
-  -ll<log_level>    - Log level (defaule:"%s", "trace", "debug", "info", "warning", "error", "critical", "off")
-  -t<timeout>       - UDP connection timeout in seconds (default: %u>
+  -l<log>           - log output path (default: console)
+  -ll<log_level>    - log level (defaule:"%s", "trace", "debug", "info", "warning", "error", "critical", "off")
+  -t<timeout>       - udp connection timeout in seconds (default: %u)
 )",
                    argv[0], log_level_str.c_str(), alive_timeout);
             fflush(stdout);

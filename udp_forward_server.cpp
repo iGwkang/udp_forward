@@ -30,7 +30,7 @@ bool UDPForwardServer::listen(const std::string & eth_ip, uint16_t udp_port)
 
         udp_socket.bind(udp_endpoint);
 
-        LOG_INFO("start listen udp {}", udp_socket.local_endpoint());
+        LOG_INFO("start listen udp {}", fmt::streamed(udp_socket.local_endpoint()));
 
         m_bind_socket_vec.push_back({ std::move(udp_socket), std::vector<uint8_t>(4 * 1024) });
 
@@ -69,7 +69,7 @@ void UDPForwardServer::do_read_data(asio::ip::udp::socket & udp_socket, std::vec
             if (ec)
             {
                 std::error_code local_endpoint_ec;
-                LOG_ERROR_IF(udp_socket.is_open(), "udp socket {} receive from error code:{}, msg:{}", udp_socket.local_endpoint(local_endpoint_ec),
+                LOG_ERROR_IF(udp_socket.is_open(), "udp socket {} receive from error code:{}, msg:{}", fmt::streamed(udp_socket.local_endpoint(local_endpoint_ec)),
                              ec.value(), ec.message());
                 if (udp_socket.is_open())
                 {
@@ -94,7 +94,7 @@ void UDPForwardServer::do_read_data(asio::ip::udp::socket & udp_socket, std::vec
             }
             else
             {
-                LOG_INFO("new client address {}, forward to {}", *endpoint, m_forward_to_endpoint);
+                LOG_INFO("new client address {}, forward to {}", fmt::streamed(*endpoint), fmt::streamed(m_forward_to_endpoint));
                 std::shared_ptr<asio::ip::udp::socket> new_udp_socket = std::make_shared<asio::ip::udp::socket>(m_io_context);
 
                 new_udp_socket->async_connect(
@@ -133,7 +133,7 @@ void UDPForwardServer::do_check_connection_alive()
                 auto session = it->second.lock();
                 if (session && session->last_alive_timepoint() < timeout_time_point)
                 {
-                    LOG_WARN("{} keepalive timeout, close connection", it->first);
+                    LOG_WARN("{} keepalive timeout, close connection", fmt::streamed(it->first));
                     it = m_udp_sessions.erase(it);
                     session->close();
                 }

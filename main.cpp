@@ -86,22 +86,22 @@ static std::map<int, ip_with_port_t> read_forward_config(const std::string & pat
     std::smatch sm;
 
     std::map<int, ip_with_port_t> forward_map;
-    for (auto & [port, ip_with_port] : ini.sections["Forward"])
+    for (auto & fwd : ini.sections["Forward"])
     {
         ip_with_port_t addr;
-        if (std::regex_match(ip_with_port, sm, re))
+        if (std::regex_match(fwd.second, sm, re))
         {
             addr.ip = sm[1].str();
             addr.port = std::stoi(sm[2].str());
-            LOG_INFO("forward to ip: {}, port: {}", addr.ip, port);
+            LOG_INFO("forward to ip: {}, port: {}", addr.ip, fwd.first);
         }
         else
         {
-            LOG_ERROR("invalid forward to address format: {}", ip_with_port);
+            LOG_ERROR("invalid forward to address format: {}", fwd.second);
             continue;
         }
 
-        forward_map[std::atoi(port.c_str())] = addr;
+        forward_map[std::atoi(fwd.first.c_str())] = addr;
     }
     return forward_map;
 }

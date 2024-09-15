@@ -19,20 +19,20 @@ void UDPForwardSession::do_read_data()
         if (ec)
         {
             std::error_code local_endpoint_ec;
-            LOG_WARN("udp socket {} receive from {} error code:{}, msg:{}", m_dst_udp_socket.local_endpoint(local_endpoint_ec), m_dst_endpoint, ec.value(),
+            LOG_WARN("udp socket {} receive from {} error code:{}, msg:{}", fmt::streamed(m_dst_udp_socket.local_endpoint(local_endpoint_ec)), fmt::streamed(m_dst_endpoint), ec.value(),
                      ec.message());
             on_close();
             return;
         }
 
-        LOG_TRACE("recv udp data from {} to {}", m_dst_endpoint, m_src_endpoint);
+        LOG_TRACE("recv udp data from {} to {}", fmt::streamed(m_dst_endpoint), fmt::streamed(m_src_endpoint));
 
         m_li_udp_socket.async_send_to(asio::buffer(m_recv_buffer.data(), bytes_transferred), m_src_endpoint,
                                       [=](const asio::error_code & ec, std::size_t bytes_transferred) {
                                           LAMBDA_REF(self);
                                           if (ec)
                                           {
-                                              LOG_WARN("udp socket sendto {} error:{}", m_src_endpoint, ec.message());
+                                              LOG_WARN("udp socket sendto {} error:{}", fmt::streamed(m_src_endpoint), ec.message());
                                               on_close();
                                               return;
                                           }
@@ -48,11 +48,11 @@ void UDPForwardSession::on_udp_data(std::vector<uint8_t> && data)
     auto self(shared_from_this());
     auto asio_buffer = asio::buffer(data);
 
-    LOG_TRACE("recv udp data from {} to {}, size:{}", m_src_endpoint, m_dst_endpoint, data.size());
+    LOG_TRACE("recv udp data from {} to {}, size:{}", fmt::streamed(m_src_endpoint), fmt::streamed(m_dst_endpoint), data.size());
 
     m_dst_udp_socket.async_send(asio_buffer, [=, data = std::move(data)](const asio::error_code & ec, std::size_t bytes_transferred) {
         LAMBDA_REF(self);
-        LOG_WARN_IF(ec, "udp socket sendto {} error:{}", m_dst_endpoint, ec.message());
+        LOG_WARN_IF(ec, "udp socket sendto {} error:{}", fmt::streamed(m_dst_endpoint), ec.message());
     });
 }
 
